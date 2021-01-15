@@ -11,7 +11,7 @@
     "repoURL": "https://github.com/azureossd/python-linux-1.git",
     "branch": "master",
     "siteConfig": {
-      "linuxFxVersion": "PYTHON|3.8"
+      "linuxFxVersion": "PYTHON|3.6"
     }
   },
   "resources": [
