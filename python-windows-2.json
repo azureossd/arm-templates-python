@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+      "hostingPlanName": "[replace(resourceGroup().name,'.','')]",
+      "siteName": "[concat(toLower(variables('hostingPlanName')), '-python-windows-2-', uniqueString(resourceGroup().id))]",
+      "sku": "S1"
+    },
+    "resources": [
+      {
+        "apiVersion": "2020-06-01",
+        "name": "[variables('hostingPlanName')]",
+        "type": "Microsoft.Web/serverfarms",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "[variables('sku')]"
+        }
+      },
+      {
+        "apiVersion": "2020-06-01",
+        "name": "[variables('siteName')]",
+        "type": "Microsoft.Web/sites",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
+        ],
+        "properties": {
+          "siteConfig": {
+                    "pythonVersion":"3.4.0",
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "python"
+                        }
+                    ]},
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
+        }
+      }
+    ]
+  }
